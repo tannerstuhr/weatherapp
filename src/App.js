@@ -1,24 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import { WeatherComponent } from "./components/WeatherComponent";
+import { ThemeProvider } from "styled-components";
+import { GlobalStyles } from "./components/globalStyles";
+import { lightTheme, darkTheme } from "./components/Themes";
 
 function App() {
+  const [theme, setTheme] = useState("light");
+  const [dayOrNight, setDayOrNight] = useState("d");
+
+  // const themeToggler = (dayOrNight) => {
+  //   // theme === "light" ? setTheme("dark") : setTheme("light");
+  // };
+
+  const handleCallback = (weatherTime) => {
+    setDayOrNight(weatherTime);
+    console.log(dayOrNight);
+    if (dayOrNight === "d") {
+      setTheme("light");
+    } else if (dayOrNight === "n") {
+      setTheme("dark");
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
+      <>
+        <GlobalStyles />
+        <div className="app">
+          <WeatherComponent parentCallback={handleCallback} />
+          {/* <button onClick={themeToggler}>Switch Theme</button> */}
+        </div>
+      </>
+    </ThemeProvider>
   );
 }
 
